@@ -1,0 +1,204 @@
+{
+    "cards": [
+        {
+            "Name": "Gold",
+            "SetName": "Base",
+            "Cost": 6,
+            "Weight": 0,
+            "Types": [
+                "Treasure"
+            ],
+            "Effects": [
+                "Coin:3"
+            ]
+        },
+        {
+            "Name": "Silver",
+            "SetName": "Base",
+            "Cost": 3,
+            "Weight": 0,
+            "Types": [
+                "Treasure"
+            ],
+            "Effects": [
+                "Coin:2"
+            ]
+        },
+        {
+            "Name": "Copper",
+            "SetName": "Base",
+            "Cost": 0,
+            "Weight": 0,
+            "Types": [
+                "Treasure"
+            ],
+            "Effects": [
+                "Coin:1"
+            ]
+        },
+        {
+            "Name": "Estate",
+            "SetName": "Base",
+            "Cost": 2,
+            "Weight": 0,
+            "Types": [
+                "Victory"
+            ],
+            "Effects": [
+                "Victory:1"
+            ]
+        },
+        {
+            "Name": "Duchy",
+            "SetName": "Base",
+            "Cost": 5,
+            "Weight": 0,
+            "Types": [
+                "Victory"
+            ],
+            "Effects": [
+                "Victory:3"
+            ]
+        },
+        {
+            "Name": "Province",
+            "SetName": "Base",
+            "Cost": 8,
+            "Weight": 0,
+            "Types": [
+                "Victory"
+            ],
+            "Effects": [
+                "Victory:6"
+            ]
+        },
+        {
+            "Name": "Curse",
+            "SetName": "Base",
+            "Cost": 0,
+            "Weight": 0,
+            "Types": [
+                "Curse"
+            ],
+            "Effects": [
+                "Victory:-1"
+            ]
+        },
+        {
+            "Name": "Market",
+            "SetName": "Base",
+            "Cost": 5,
+            "Weight": 0,
+            "Types": [
+                "Action"
+            ],
+            "Effects": [
+                "Action:1",
+                "Coin:1",
+                "Buy:1",
+                "Card:1"
+            ]
+        },
+        {
+            "Name": "Mine",
+            "SetName": "Base",
+            "Cost": 5,
+            "Weight": 0,
+            "Types": [
+                "Action"
+            ],
+            "Effects": [
+                "Trash:1|Type:Treasure",
+                "Gain:1|Type:Treasure|Cost:+3"
+            ]
+        },
+        {
+            "Name": "Moat",
+            "SetName": "Base",
+            "Cost": 2,
+            "Weight": 0,
+            "Types": [
+                "Action",
+                "Reaction"
+            ],
+            "Effects": [
+                "Card:2",
+                "Reaction:Immune"
+            ]
+        },
+        {
+            "Name": "Remodel",
+            "SetName": "Base",
+            "Cost": 4,
+            "Weight": 0,
+            "Types": [
+                "Action"
+            ],
+            "Effects": [
+                "Trash:1|Type:Any",
+                "Gain:1|Type:Any|Cost:+2"   
+            ]
+        },
+        {
+            "Name": "Smithy",
+            "SetName": "Base",
+            "Cost": 4,
+            "Weight": 0,
+            "Types": [
+                "Action"
+            ],
+            "Effects": [
+                "Card:3"
+            ]
+        },
+        {
+            "Name": "Village",
+            "SetName": "Base",
+            "Cost": 3,
+            "Weight": 0,
+            "Types": [
+                "Action"
+            ],
+            "Effects": [
+                "Action:2",
+                "Card:1"
+            ]
+        },
+        {
+            "Name": "Workshop",
+            "SetName": "Base",
+            "Cost": 3,
+            "Weight": 0,
+            "Types": [
+                "Action"
+            ],
+            "Effects": [
+                "Gain:1|Type:Any|Cost:4"
+            ]
+        },
+        {
+            "Name": "Chapel",
+            "SetName": "Base",
+            "Cost": 2,
+            "Weight": 0,
+            "Types": [
+                "Action"
+            ],
+            "Effects": [
+                "Trash:4|Type:Any"
+            ]
+        },
+        {
+            "Name": "Throne Room",
+            "SetName": "Base",
+            "Cost": 4,
+            "Weight": 0,
+            "Types": [
+                "Action"
+            ],
+            "Effects": [
+                "Throne Room:1"
+            ]
+        }
+    ]
+}
