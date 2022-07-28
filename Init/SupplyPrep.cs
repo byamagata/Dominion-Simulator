@@ -7,12 +7,7 @@ namespace DominionSimulator2;
 /// </summary>
 public class SupplyPrep
 {
-    public CardDB CardDB { get; set; } = null;
-
-    public SupplyPrep(CardDB cardDB)
-    {
-        CardDB = cardDB;
-    }
+    public SupplyPrep() {}
 
     public Supply CreateSupply()
     {

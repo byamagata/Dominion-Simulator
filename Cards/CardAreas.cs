@@ -1,3 +1,5 @@
+using DominionSimulator2.Data;
+
 namespace DominionSimulator2;
 
 public class CardAreas
@@ -20,28 +22,29 @@ public class CardAreas
 
     public void Draw(int numCards)
     {
-        if(numCards < Deck.Count)
+        if (numCards < Deck.Count)
         {
             Hand.AddRange(Deck.Take(numCards));
             Deck.RemoveRange(0, numCards);
         }
-        else if(numCards >= Deck.Count)
+        else if (numCards >= Deck.Count)
         {
             Hand.AddRange(Deck.Take(Deck.Count));
             numCards -= Deck.Count;
             Deck.Clear();
-            if(Discard.Count <= 0)
+            if (Discard.Count <= 0)
                 return;
             ShuffleDeck(true);
             Draw(numCards);
         }
     }
 
-    public void PlayCard(Card card, Player player)
+    public void PlayCard(Card card, Player player, Supply supply = null)
     {
         Hand.Remove(card);
         Played.Add(card);
-        card.Play(player);
+        CardDB.UpdateWeight(-2, card.Name);
+        card.Play(player, supply);
     }
 
     public IEnumerable<Card> GetCardByType(CardType type) => Hand.Where(c => c.Types.Contains(type));
@@ -50,7 +53,7 @@ public class CardAreas
     public void PlayTreasures(int cost, Player player)
     {
         var treasures = GetCardByType(CardType.Treasure).OrderByDescending(c => (c.Effects.Where(e => e is AddCoinEffect).Sum(e => (e as AddCoinEffect).Coins))).ToList();
-        while(cost > player.Coins)
+        while (cost > player.Coins)
         {
             var bestTreasure = treasures.First();
             treasures.Remove(bestTreasure);
@@ -58,17 +61,28 @@ public class CardAreas
         }
     }
 
+    // returns an IEnumerable with all Copper, Estate, and Curse cards in the hand
+    public List<Card> GetTrash() => Hand.Where(c => c.Name == "Copper" || c.Name == "Estate" || c.Name == "Curse").ToList();
+
     public void CleanPlayArea()
     {
         Discard.AddRange(Played);
         Played.Clear();
     }
 
-    public void DiscardHand()
+    public void DiscardCards(IEnumerable<Card> cards, bool endOfTurn = false)
     {
-        Discard.AddRange(Hand);
-        Hand.ForEach(c => c.Weight -= 1);
-        Hand.Clear();
+        Discard.AddRange(cards);
+        if (endOfTurn)
+        {
+            Hand.Clear();
+            cards.ToList().ForEach(c => CardDB.UpdateWeight(1, c.Name));
+        }
+        else
+        {
+            cards.ToList().ForEach(c => CardDB.UpdateWeight(2, c.Name));
+            cards.ToList().ForEach(c => Hand.Remove(c));
+        }
     }
 
     public void ResetDeck()
@@ -76,18 +90,22 @@ public class CardAreas
         Deck.AddRange(Discard);
         Deck.AddRange(Played);
         Deck.AddRange(Hand);
+
+        Discard.Clear();
+        Played.Clear();
+        Hand.Clear();
     }
 
     public void GroupCards()
     {
         Dictionary<string, int> cardCount = new();
-        foreach(var card in Deck)
+        foreach (var card in Deck)
         {
-            if(!cardCount.Keys.Contains(card.Name))
+            if (!cardCount.Keys.Contains(card.Name))
                 cardCount.Add(card.Name, 0);
             cardCount[card.Name]++;
         }
-        foreach(var card in cardCount.Keys)
+        foreach (var card in cardCount.Keys)
         {
             Console.WriteLine($"{card} x{cardCount[card]}");
         }

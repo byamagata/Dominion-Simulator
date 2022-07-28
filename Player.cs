@@ -10,23 +10,25 @@ public class Player
     public int Coins { get; set; } = 0;
     public CardAreas Cards { get; set; } = new();
 
-    public void PlayActions()
+    public void PlayActions(Supply supply)
     {
         var actionCards = Cards.GetCardByType(CardType.Action).ToList();
         while(Actions > 0 && actionCards.Any())
         {
             var bestAction = CardHandling.GetBest(actionCards).First();
             Actions--;
-            Cards.PlayCard(bestAction, this);
+            Cards.PlayCard(bestAction, this, supply);
             bestAction.Weight += 2;
             actionCards = Cards.GetCardByType(CardType.Action).ToList();
         }
+        // Discard remaining action cards
+        Cards.DiscardCards(actionCards);
     }
 
-    public void BuyCards(Supply supply, CardDB cardDB)
+    public void BuyCards(Supply supply)
     {
         var potentialCoins = Coins + Cards.GetCoinsInHand();
-        var cardsForPurchase = cardDB.GetCards(supply.GetAffordableCards(potentialCoins)).ToList();
+        var cardsForPurchase = CardDB.GetCards(supply.GetAffordableCards(potentialCoins)).ToList();
         while(Buys > 0 && cardsForPurchase.Any())
         {
             var bestCard = CardHandling.GetBest(cardsForPurchase).First();
@@ -38,13 +40,13 @@ public class Player
 
             // Prep for next check
             potentialCoins = Coins + Cards.GetCoinsInHand();
-            cardsForPurchase = cardDB.GetCards(supply.GetAffordableCards(potentialCoins)).ToList();
+            cardsForPurchase = CardDB.GetCards(supply.GetAffordableCards(potentialCoins)).ToList();
         }
     }
 
     public void EndTurn()
     {
-        Cards.DiscardHand();
+        Cards.DiscardCards(Cards.Hand, true);
         Cards.CleanPlayArea();
         Cards.Draw(5);
     }

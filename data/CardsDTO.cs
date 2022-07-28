@@ -6,17 +6,19 @@ namespace DominionSimulator2.Data;
 public class CardDB
 {
     [JsonPropertyName("cards")]
-    public CardDTO[] Cards { get; set; } = null;
+    public static CardDTO[] Cards { get; set; } = null;
 
-    public CardDB Load()
+    public static CardDTO[] Load()
     {
         var filePath = @".\data\cards.json";
-        return JsonSerializer.Deserialize<CardDB>(File.ReadAllText(filePath));
+        return JsonSerializer.Deserialize<CardDTO[]>(File.ReadAllText(filePath));
     }
 
-    public Card GetCard(string name) => new Card(Cards.Where(x => x.Name == name).First());
+    public static void UpdateWeight(int weightDiff, string name) => Cards.First(x => x.Name == name).Weight += weightDiff;
 
-    public IEnumerable<Card> GetCards(IEnumerable<string> names) => names.Select(x => GetCard(x));
+    public static Card GetCard(string name) => new Card(Cards.Where(x => x.Name == name).First());
+
+    public static IEnumerable<Card> GetCards(IEnumerable<string> names) => names.Select(x => GetCard(x));
 }
 
 public class CardDTO

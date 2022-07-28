@@ -36,6 +36,35 @@ public class CardHandling
             }
         }
 
-        return toReturn;
+        return toReturn.OrderByDescending(c => c.Weight);
+    }
+
+    public static IEnumerable<Card> GetWorst(List<Card> cards, int numCards = 1)
+    {
+        if (cards is null) throw new ArgumentNullException(nameof(cards));
+
+        if (numCards <= 0) throw new ArgumentException("Number of cards must be greater than 0.", nameof(numCards));
+
+        if (numCards > cards.Count)
+            return cards.OrderBy(c => c.Weight);
+
+        if (cards.All(c => c.Weight == 0))
+            return cards.OrderBy(c => c.Cost).Take(numCards);
+        
+        cards = cards.OrderBy(c => c.Weight).ToList();
+        var toReturn = new List<Card>();
+        for (int i = 0; i < numCards; ++i)
+        {
+            // 5% chance of getting a random card
+            if(new Random().Next(0,100) < 5)
+                toReturn.Add(cards[new Random().Next(0, cards.Count)]);
+            else
+            {
+                toReturn.Add(cards[0]);
+                cards.RemoveAt(0);
+            }
+        }
+
+        return toReturn.OrderBy(c => c.Weight);
     }
 }

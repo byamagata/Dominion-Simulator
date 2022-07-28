@@ -3,12 +3,11 @@ using DominionSimulator2;
 using DominionSimulator2.Data;
 
 // Prep the Supply
-var cardDb = new CardDB();
-cardDb = cardDb.Load();
-var supply = new SupplyPrep(cardDb).CreateSupply();
+CardDB.Cards = CardDB.Load();
+var supply = new SupplyPrep().CreateSupply();
 
 // Prep the Players
-var players = new PlayerPrep(cardDb).CreatePlayers(4);
+var players = new PlayerPrep().CreatePlayers(4);
 
 // Before the game begins, pick a random order of players:
 var random = new Random();
@@ -29,10 +28,10 @@ while(!gameOver)
         player.Coins = 0;
 
         // Play Action Cards
-        player.PlayActions();
+        player.PlayActions(supply);
 
         // Buy Cards
-        player.BuyCards(supply, cardDb);
+        player.BuyCards(supply);
 
         // Player Ends Turn
         player.EndTurn();
@@ -48,10 +47,32 @@ while(!gameOver)
 }
 
 // Check for winner
+var allCards = new List<Card>();
 foreach(var player in players)
 {
     player.Cards.ResetDeck();
     var points = player.Cards.GetVictoryPoints();
     Console.WriteLine($"{player.Name} has {points} points");
     player.Cards.GroupCards();
+    allCards.AddRange(player.Cards.Deck);
+}
+
+var cardWeights = new Dictionary<string, int>();
+foreach(var card in allCards)
+{
+    if(!cardWeights.Keys.Contains(card.Name))
+        cardWeights.Add(card.Name, 0);
+    cardWeights[card.Name] += card.Effects.Sum(e => (e is VictoryEffect) ? (e as VictoryEffect).Points : 0);
+}
+
+Console.WriteLine("\n\nCard Weights\n");
+foreach(var card in cardWeights.OrderByDescending(x => x.Value))
+{
+    CardDB.UpdateWeight(cardWeights[card.Key], card.Key);
+}
+
+Console.WriteLine("Card Name\t\tWeight\t\tTotal Quantity");
+foreach(var card in CardDB.Cards.OrderBy(c => c.Weight))
+{
+    Console.WriteLine($"{card.Name}\t\t\t{card.Weight}\t\t\t{allCards.Sum(x => x.Name == card.Name ? 1 : 0)}");
 }

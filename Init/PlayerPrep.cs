@@ -4,8 +4,7 @@ namespace DominionSimulator2;
 
 public class PlayerPrep
 {
-    public CardDB CardDB { get; set; } = null;
-    public PlayerPrep(CardDB cardDB) { CardDB = cardDB; }
+    public PlayerPrep() {}
 
     public List<Player> CreatePlayers(int numPlayers)
     {

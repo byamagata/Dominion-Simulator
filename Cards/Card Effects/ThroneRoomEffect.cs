@@ -1,7 +1,7 @@
 namespace DominionSimulator2;
 public class ThroneRoomEffect : ICardEffect
 {
-    public void Handle(Player player)
+    public void Handle(string name, Player player = null, Supply supply = null)
     {
         
     }

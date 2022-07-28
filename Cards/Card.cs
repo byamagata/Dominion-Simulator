@@ -77,11 +77,11 @@ public class Card
     };
 #endregion
 
-    public void Play(Player player)
+    public void Play(Player player = null, Supply supply = null)
     {
         foreach(var effect in Effects)
         {
-            effect.Handle(player);
+            effect.Handle(Name, player, supply);
         }
     }
 

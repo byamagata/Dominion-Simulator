@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using DominionSimulator2.Data;
 
 namespace DominionSimulator2
 {
@@ -24,7 +25,21 @@ namespace DominionSimulator2
             }
         }
 
-        public void Handle(Player player)
-        {}
+        public void Handle(string name, Player player = null, Supply supply = null)
+        {
+            List<string> possibleCards;
+            if (TotalCost is not null && TotalCost.HasValue)
+                possibleCards = supply.GetAffordableCards(TotalCost.Value);
+            else if (AddedCost is not null && AddedCost.HasValue)
+            {
+                var prevTrashed = supply.Trash.Last().Cost;
+                possibleCards = supply.GetAffordableCards(prevTrashed + AddedCost.Value);
+            }
+            else throw new Exception("TotalCost and AddedCost were both null");
+
+            if (possibleCards.Any())
+                player.Cards.Discard.Add(CardHandling.GetBest(CardDB.GetCards(possibleCards).ToList()).First());
+            else return;
+        }
     }
 }
