@@ -3,12 +3,21 @@ using DominionSimulator2;
 using DominionSimulator2.Data;
 
 // Play the game X times
-const int MAX_GAMES = 100;
+const int MAX_GAMES = 1000;
 
+// 0 out the weights from the previous trials
+CardDB.ResetDB();
+
+var watch = System.Diagnostics.Stopwatch.StartNew();
 for (int i = 0; i < MAX_GAMES; i++)
 {
+    if (i % 10 == 0)
+    {
+        Console.WriteLine($"Game {i}");
+    }
+
     // Prep the Supply
-    CardDB.Cards = CardDB.Load();
+    CardDB.Init();
     var supply = new SupplyPrep().CreateSupply();
 
     // Prep the Players
@@ -48,11 +57,19 @@ for (int i = 0; i < MAX_GAMES; i++)
             }
         }
         turn++;
+        if(turn > 30)
+        {
+            // Check to see if everyone is stuck because no one can buy anything
+        }
     }
 
     // Update the CardDB and save to file
-    
+    CardDB.Save();
 }
+watch.Stop();
+
+// print elapsed time in seconds
+Console.WriteLine($"Elapsed Time: {watch.ElapsedMilliseconds / 1000} seconds");
 
 
 

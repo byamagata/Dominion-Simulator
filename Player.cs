@@ -18,7 +18,6 @@ public class Player
             var bestAction = CardHandling.GetBest(actionCards).First();
             Actions--;
             Cards.PlayCard(bestAction, this, supply);
-            bestAction.Weight += 2;
             actionCards = Cards.GetCardByType(CardType.Action).ToList();
         }
         // Discard remaining action cards

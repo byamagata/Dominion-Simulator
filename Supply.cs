@@ -66,4 +66,9 @@ public class Pile
     }
 
     public void PurchaseCard() => CardsInPile--;
+
+    public override string ToString()
+    {
+        return $"{Name} - {CardsInPile}";
+    }
 }

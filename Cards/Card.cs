@@ -7,7 +7,7 @@ public class Card
     public string Name { get; set; } = "";
     public string SetName { get; set; } = "";
     public int Cost { get; set; } = 0;
-    public int Weight { get; set; } = 0;
+    public double Weight { get; set; } = 0.0;
 
     private List<CardType> _types = new();
     public List<CardType> Types
